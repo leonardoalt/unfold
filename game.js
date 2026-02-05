@@ -1,3 +1,71 @@
+// Localization
+const TRANSLATIONS = {
+    en: {
+        title: 'Unfold',
+        chooseWorld: 'Choose your world:',
+        space: 'Space',
+        spaceDesc: 'Nebulae, planets & cosmic vistas.',
+        classic: 'Classic',
+        classicDesc: 'Dreamlike landscapes & fantasy art.',
+        geometry: 'Geometry',
+        geometryDesc: 'Abstract geometric patterns.',
+        devMode: 'Dev mode',
+        seed: 'Seed:',
+        startLevel: 'Start level:',
+        level: 'Level:',
+        moves: 'Moves:',
+        worlds: '← Worlds',
+        random: 'Random'
+    },
+    pt: {
+        title: 'Unfold',
+        chooseWorld: 'Escolha seu mundo:',
+        space: 'Espaço',
+        spaceDesc: 'Nebulosas, planetas e vistas cósmicas.',
+        classic: 'Clássico',
+        classicDesc: 'Paisagens oníricas e arte fantástica.',
+        geometry: 'Geometria',
+        geometryDesc: 'Padrões geométricos abstratos.',
+        devMode: 'Modo dev',
+        seed: 'Semente:',
+        startLevel: 'Nível inicial:',
+        level: 'Nível:',
+        moves: 'Jogadas:',
+        worlds: '← Mundos',
+        random: 'Aleatório'
+    }
+};
+
+function getLanguage() {
+    const lang = navigator.language || navigator.userLanguage || 'en';
+    return lang.startsWith('pt') ? 'pt' : 'en';
+}
+
+function applyTranslations() {
+    const lang = getLanguage();
+    const t = TRANSLATIONS[lang];
+
+    document.querySelector('#mode-select h1').textContent = t.title;
+    document.querySelector('#mode-select > p').textContent = t.chooseWorld;
+
+    document.querySelector('[data-mode="space"] .mode-title').textContent = t.space;
+    document.querySelector('[data-mode="space"] .mode-desc').textContent = t.spaceDesc;
+    document.querySelector('[data-mode="classic"] .mode-title').textContent = t.classic;
+    document.querySelector('[data-mode="classic"] .mode-desc').textContent = t.classicDesc;
+    document.querySelector('[data-mode="geometry"] .mode-title').textContent = t.geometry;
+    document.querySelector('[data-mode="geometry"] .mode-desc').textContent = t.geometryDesc;
+
+    document.querySelector('#dev-mode label').childNodes[1].textContent = ' ' + t.devMode;
+    document.querySelector('#dev-options label:nth-child(1)').childNodes[0].textContent = t.seed + ' ';
+    document.querySelector('#dev-options label:nth-child(2)').childNodes[0].textContent = t.startLevel + ' ';
+    document.querySelector('#seed-input').placeholder = t.random;
+
+    document.querySelector('#header h1').textContent = t.title;
+    document.querySelector('#stats span:nth-child(1)').innerHTML = t.level + ' <span id="level">1</span>';
+    document.querySelector('#stats span:nth-child(2)').innerHTML = t.moves + ' <span id="moves">0</span>';
+    document.querySelector('#back-btn').textContent = t.worlds;
+}
+
 class InfinitePuzzle {
     constructor(mode, options = {}) {
         this.mode = mode; // 'classic' or 'geometry'
@@ -1713,6 +1781,8 @@ class InfinitePuzzle {
 
 // Mode selection and game initialization
 window.addEventListener('DOMContentLoaded', () => {
+    applyTranslations();
+
     const modeSelect = document.getElementById('mode-select');
     const gameContainer = document.getElementById('game-container');
     const modeButtons = document.querySelectorAll('.mode-btn');
