@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unfold</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="mode-select">
+        <h1>Unfold</h1>
+        <p>Choose your world:</p>
+        <div class="mode-buttons">
+            <button class="mode-btn" data-mode="geometry">
+                <span class="mode-icon">🔷</span>
+                <span class="mode-title">Geometry</span>
+                <span class="mode-desc">Abstract geometric patterns.</span>
+            </button>
+            <button class="mode-btn" data-mode="classic">
+                <span class="mode-icon">🎨</span>
+                <span class="mode-title">Classic</span>
+                <span class="mode-desc">Dreamlike landscapes & fantasy art.</span>
+            </button>
+            <button class="mode-btn" data-mode="space">
+                <span class="mode-icon">🚀</span>
+                <span class="mode-title">Space</span>
+                <span class="mode-desc">Nebulae, planets & cosmic vistas.</span>
+            </button>
+        </div>
+        <div id="dev-mode">
+            <label>
+                <input type="checkbox" id="dev-toggle"> Dev mode
+            </label>
+            <div id="dev-options" class="hidden">
+                <label>Seed: <input type="number" id="seed-input" placeholder="Random"></label>
+                <label>Start level: <input type="number" id="level-input" value="1" min="1"></label>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-container" class="hidden">
+        <div id="header">
+            <h1>Unfold</h1>
+            <div id="stats">
+                <span>Level: <span id="level">1</span></span>
+                <span>Moves: <span id="moves">0</span></span>
+                <button id="back-btn">← Worlds</button>
+            </div>
+        </div>
+        <div id="puzzle-wrapper">
+            <div id="puzzle-container"></div>
+        </div>
+        <div id="message"></div>
+        <div id="preview-container">
+            <canvas id="preview-canvas"></canvas>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>

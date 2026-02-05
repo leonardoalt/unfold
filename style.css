@@ -1,0 +1,299 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Mode Selection Screen */
+#mode-select {
+    text-align: center;
+    color: #fff;
+}
+
+#mode-select h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 30px rgba(100, 200, 255, 0.5);
+}
+
+#mode-select > p {
+    font-size: 1.2rem;
+    color: #a0d2db;
+    margin-bottom: 30px;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mode-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 30px 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 220px;
+}
+
+.mode-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(100, 200, 255, 0.5);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(100, 200, 255, 0.3);
+}
+
+.mode-icon {
+    font-size: 3rem;
+}
+
+.mode-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.mode-desc {
+    font-size: 0.9rem;
+    color: #a0d2db;
+    max-width: 180px;
+}
+
+#dev-mode {
+    margin-top: 30px;
+    color: #a0d2db;
+    font-size: 0.9rem;
+}
+
+#dev-mode label {
+    cursor: pointer;
+}
+
+#dev-options {
+    margin-top: 15px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+#dev-options.hidden {
+    display: none;
+}
+
+#dev-options input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 5px;
+    width: 100px;
+    font-size: 0.9rem;
+}
+
+#dev-options input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Game Container */
+#game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#header {
+    text-align: center;
+    color: #fff;
+}
+
+#header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(100, 200, 255, 0.5);
+}
+
+#stats {
+    display: flex;
+    gap: 30px;
+    font-size: 1.2rem;
+    color: #a0d2db;
+    align-items: center;
+}
+
+#back-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #a0d2db;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+#back-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+#puzzle-wrapper {
+    position: relative;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+#puzzle-container {
+    display: grid;
+    gap: 3px;
+    background: #0a0a15;
+    padding: 3px;
+    border-radius: 10px;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.puzzle-piece {
+    cursor: grab;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.puzzle-piece:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(100, 200, 255, 0.4);
+    z-index: 10;
+}
+
+.puzzle-piece.selected {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 200, 100, 0.8);
+    z-index: 20;
+}
+
+.puzzle-piece.correct {
+    box-shadow: 0 0 15px rgba(100, 255, 150, 0.5);
+}
+
+.puzzle-piece.dragging {
+    opacity: 0.5;
+    transform: scale(1.1);
+}
+
+.puzzle-piece.drag-over {
+    box-shadow: 0 0 25px rgba(100, 200, 255, 0.8);
+    transform: scale(1.05);
+}
+
+.puzzle-piece canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#message:empty {
+    display: none;
+}
+
+#message {
+    font-size: 1.5rem;
+    color: #ffd700;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+#preview-container {
+    text-align: center;
+    color: #a0d2db;
+    transition: opacity 0.5s ease;
+}
+
+#preview-container.fading {
+    opacity: 0;
+}
+
+#preview-canvas {
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    max-width: 150px;
+    max-height: 150px;
+}
+
+
+/* Zoom out animation */
+@keyframes zoomOut {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(0.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+}
+
+@keyframes zoomIn {
+    0% {
+        transform: scale(2);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.zoom-out {
+    animation: zoomOut 1s ease-in-out forwards;
+}
+
+.zoom-in {
+    animation: zoomIn 1s ease-in-out forwards;
+}
+
+/* Celebration effect */
+@keyframes celebrate {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.celebrate {
+    animation: celebrate 0.3s ease-in-out 3;
+}
+
+/* Preview flash animation for classic mode */
+@keyframes previewFlash {
+    0% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+    100% { box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); }
+}
+
+#preview-canvas.flash {
+    animation: previewFlash 0.5s ease-out;
+}
