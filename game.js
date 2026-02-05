@@ -28,8 +28,19 @@ class InfinitePuzzle {
 
     async init() {
         this.showMessage('');
+        this.calculatePieceSize();
         await this.generateImage();
         this.createPuzzle();
+    }
+
+    calculatePieceSize() {
+        // Calculate piece size to fit within viewport
+        const maxWidth = Math.min(window.innerWidth - 40, 500); // 40px padding, max 500px
+        const maxHeight = window.innerHeight - 250; // Leave room for header, preview
+        const maxSize = Math.min(maxWidth, maxHeight);
+        this.pieceSize = Math.floor(maxSize / this.gridSize);
+        // Minimum piece size for playability
+        this.pieceSize = Math.max(this.pieceSize, 40);
     }
 
     // Generate image based on mode
@@ -1663,6 +1674,7 @@ class InfinitePuzzle {
             this.gridSize++;
         }
 
+        this.calculatePieceSize();
         await this.generateImage();
         this.createPuzzle();
 
