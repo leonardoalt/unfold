@@ -1,6 +1,6 @@
 # Claude Instructions
 
-Read `spec.md` for the full project specification.
+Read `README.md` for the full project specification.
 
 ## Quick Reference
 
