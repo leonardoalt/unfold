@@ -34,14 +34,16 @@ class InfinitePuzzle {
     }
 
     calculatePieceSize() {
-        // Calculate piece size to fit within viewport
-        const maxWidth = Math.min(window.innerWidth - 60, 450); // 60px padding, max 450px
-        const maxHeight = window.innerHeight - 300; // Leave room for header, preview
-        const maxSize = Math.min(maxWidth, maxHeight);
-        this.pieceSize = Math.floor(maxSize / this.gridSize);
-        // Clamp piece size
-        this.pieceSize = Math.max(this.pieceSize, 30);
-        this.pieceSize = Math.min(this.pieceSize, 100);
+        // Puzzle must fit within viewport with padding
+        const availableWidth = window.innerWidth - 60;
+        const availableHeight = window.innerHeight - 280;
+        const maxPuzzleSize = Math.min(availableWidth, availableHeight, 500);
+
+        // Piece size = total size / grid, floor to avoid subpixel issues
+        this.pieceSize = Math.floor(maxPuzzleSize / this.gridSize);
+
+        // Minimum 25px for playability at very high levels
+        this.pieceSize = Math.max(this.pieceSize, 25);
     }
 
     // Generate image based on mode
