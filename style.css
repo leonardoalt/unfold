@@ -173,6 +173,7 @@ body {
     padding: 3px;
     border-radius: 10px;
     transition: transform 0.5s ease, opacity 0.5s ease;
+    touch-action: none;
 }
 
 .puzzle-piece {
@@ -180,6 +181,10 @@ body {
     transition: transform 0.15s ease, box-shadow 0.15s ease;
     border-radius: 3px;
     overflow: hidden;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .puzzle-piece:hover {
