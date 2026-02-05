@@ -1559,8 +1559,6 @@ class InfinitePuzzle {
 
         if (this.level % 3 === 0) {
             this.gridSize++;
-            this.showMessage(`Difficulty increased! Now ${this.gridSize}x${this.gridSize}`);
-            await this.delay(1000);
         }
 
         await this.generateImage();
