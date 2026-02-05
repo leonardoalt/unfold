@@ -4,7 +4,7 @@ class InfinitePuzzle {
         this.level = options.startLevel || 1;
         this.baseSeed = options.seed !== undefined ? options.seed : Math.floor(Math.random() * 1000000);
         this.moves = 0;
-        this.gridSize = 3 + Math.floor((this.level - 1) / 3); // Adjust for start level
+        this.gridSize = 3 + Math.floor(this.level / 3); // Adjust for start level
         this.pieceSize = 100;
         this.pieces = [];
         this.selectedPiece = null;
