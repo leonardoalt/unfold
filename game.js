@@ -12,6 +12,11 @@ class InfinitePuzzle {
         this.previousSolvedImage = null;
         this.draggedPieceId = null;
 
+        // Touch support
+        this.touchDragPiece = null;
+        this.touchClone = null;
+        this.touchStartPos = null;
+
         this.container = document.getElementById('puzzle-container');
         this.previewCanvas = document.getElementById('preview-canvas');
         this.levelDisplay = document.getElementById('level');
@@ -1426,7 +1431,7 @@ class InfinitePuzzle {
 
         div.appendChild(canvas);
 
-        // Drag and drop
+        // Drag and drop (desktop)
         div.addEventListener('dragstart', (e) => {
             this.draggedPieceId = index;
             div.classList.add('dragging');
@@ -1463,7 +1468,104 @@ class InfinitePuzzle {
             }
         });
 
+        // Touch support (mobile)
+        div.addEventListener('touchstart', (e) => this.handleTouchStart(e, index), { passive: false });
+        div.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
+        div.addEventListener('touchend', (e) => this.handleTouchEnd(e, index), { passive: false });
+
         return div;
+    }
+
+    handleTouchStart(e, pieceId) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const piece = this.pieces.find(p => p.id === pieceId);
+
+        this.touchDragPiece = piece;
+        this.touchStartPos = { x: touch.clientX, y: touch.clientY };
+
+        // Create visual clone for dragging
+        this.touchClone = piece.element.cloneNode(true);
+        this.touchClone.classList.add('touch-dragging');
+        this.touchClone.style.position = 'fixed';
+        this.touchClone.style.zIndex = '1000';
+        this.touchClone.style.pointerEvents = 'none';
+        this.touchClone.style.width = this.pieceSize + 'px';
+        this.touchClone.style.height = this.pieceSize + 'px';
+
+        const rect = piece.element.getBoundingClientRect();
+        this.touchClone.style.left = rect.left + 'px';
+        this.touchClone.style.top = rect.top + 'px';
+
+        document.body.appendChild(this.touchClone);
+        piece.element.classList.add('dragging');
+    }
+
+    handleTouchMove(e) {
+        if (!this.touchDragPiece || !this.touchClone) return;
+        e.preventDefault();
+
+        const touch = e.touches[0];
+        const rect = this.touchDragPiece.element.getBoundingClientRect();
+
+        // Move clone with finger
+        this.touchClone.style.left = (touch.clientX - this.pieceSize / 2) + 'px';
+        this.touchClone.style.top = (touch.clientY - this.pieceSize / 2) + 'px';
+
+        // Highlight piece under finger
+        this.clearDragOver();
+        const elementUnder = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (elementUnder) {
+            const pieceUnder = elementUnder.closest('.puzzle-piece');
+            if (pieceUnder && pieceUnder !== this.touchDragPiece.element) {
+                pieceUnder.classList.add('drag-over');
+            }
+        }
+    }
+
+    handleTouchEnd(e, pieceId) {
+        if (!this.touchDragPiece) return;
+        e.preventDefault();
+
+        // Find piece under drop point
+        const touch = e.changedTouches[0];
+        this.clearDragOver();
+
+        // Remove clone
+        if (this.touchClone) {
+            this.touchClone.remove();
+            this.touchClone = null;
+        }
+
+        this.touchDragPiece.element.classList.remove('dragging');
+
+        // Find target piece
+        const elementUnder = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (elementUnder) {
+            const pieceUnder = elementUnder.closest('.puzzle-piece');
+            if (pieceUnder && pieceUnder !== this.touchDragPiece.element) {
+                const targetId = parseInt(pieceUnder.dataset.id);
+                const targetPiece = this.pieces.find(p => p.id === targetId);
+
+                if (targetPiece) {
+                    this.swapPieces(this.touchDragPiece, targetPiece);
+                    this.moves++;
+                    this.movesDisplay.textContent = this.moves;
+                    if (this.checkWin()) {
+                        this.handleWin();
+                    }
+                }
+            }
+        }
+
+        this.touchDragPiece = null;
+        this.touchStartPos = null;
+    }
+
+    clearDragOver() {
+        document.querySelectorAll('.puzzle-piece.drag-over').forEach(el => {
+            el.classList.remove('drag-over');
+        });
     }
 
     shufflePieces() {
