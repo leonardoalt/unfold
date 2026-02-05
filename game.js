@@ -36,14 +36,18 @@ const TRANSLATIONS = {
     }
 };
 
-function getLanguage() {
-    const lang = navigator.language || navigator.userLanguage || 'en';
-    return lang.startsWith('pt') ? 'pt' : 'en';
+async function detectCountry() {
+    try {
+        const response = await fetch('https://ipapi.co/country/');
+        const country = await response.text();
+        return country.trim();
+    } catch {
+        return null;
+    }
 }
 
-function applyTranslations() {
-    const lang = getLanguage();
-    const t = TRANSLATIONS[lang];
+function applyTranslations(lang) {
+    const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
 
     document.querySelector('#mode-select h1').textContent = t.title;
     document.querySelector('#mode-select > p').textContent = t.chooseWorld;
@@ -1780,8 +1784,11 @@ class InfinitePuzzle {
 }
 
 // Mode selection and game initialization
-window.addEventListener('DOMContentLoaded', () => {
-    applyTranslations();
+window.addEventListener('DOMContentLoaded', async () => {
+    // Detect country by IP and apply language
+    const country = await detectCountry();
+    const lang = country === 'BR' ? 'pt' : 'en';
+    applyTranslations(lang);
 
     const modeSelect = document.getElementById('mode-select');
     const gameContainer = document.getElementById('game-container');
